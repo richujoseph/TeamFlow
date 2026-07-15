@@ -1,0 +1,108 @@
+# =============================================================================
+# TeamFlow EPMS — Docker Compose Configuration
+# =============================================================================
+# Development environment with 3 services:
+# - backend:  Django API server (with hot-reload via bind mount)
+# - postgres: PostgreSQL 16 database
+# - redis:    Redis 7 cache/session store
+#
+# Frontend runs natively (pnpm dev) for faster HMR.
+# Celery worker deferred to Phase 2.
+#
+# Usage:
+#   docker compose up -d          # Start all services
+#   docker compose logs -f backend # Follow backend logs
+#   docker compose down           # Stop all services
+#   docker compose down -v        # Stop and remove volumes
+# =============================================================================
+
+services:
+  # ---------------------------------------------------------------------------
+  # Backend — Django API Server
+  # ---------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend/Dockerfile
+      target: base  # Use base stage (skips non-root user for dev bind mount compat)
+    container_name: teamflow-backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app  # Bind mount for hot-reload
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      - DJANGO_ENV=development
+      - DJANGO_SETTINGS_MODULE=config.settings.development
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - teamflow-network
+    restart: unless-stopped
+    entrypoint: ["/bin/bash", "/app/../docker/backend/entrypoint.sh"]
+
+  # ---------------------------------------------------------------------------
+  # PostgreSQL — Primary Database
+  # ---------------------------------------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: teamflow-postgres
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-teamflow}
+      - POSTGRES_USER=${POSTGRES_USER:-teamflow}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-teamflow_dev_password}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-teamflow} -d ${POSTGRES_DB:-teamflow}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - teamflow-network
+    restart: unless-stopped
+
+  # ---------------------------------------------------------------------------
+  # Redis — Cache & Session Store
+  # ---------------------------------------------------------------------------
+  redis:
+    image: redis:7-alpine
+    container_name: teamflow-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - teamflow-network
+    restart: unless-stopped
+
+# ---------------------------------------------------------------------------
+# Networks
+# ---------------------------------------------------------------------------
+networks:
+  teamflow-network:
+    driver: bridge
+    name: teamflow-network
+
+# ---------------------------------------------------------------------------
+# Volumes
+# ---------------------------------------------------------------------------
+volumes:
+  pgdata:
+    name: teamflow-pgdata
+  redisdata:
+    name: teamflow-redisdata
