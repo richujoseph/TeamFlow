@@ -1,3 +1,0 @@
-"""
-TeamFlow EPMS — Projects Tests.
-"""

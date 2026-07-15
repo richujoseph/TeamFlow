@@ -1,3 +1,0 @@
-"""
-TeamFlow EPMS — Notifications Tests.
-"""

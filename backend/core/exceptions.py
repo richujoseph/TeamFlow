@@ -1,20 +1,7 @@
-"""
-TeamFlow EPMS — Custom Exception Hierarchy.
-
-All TeamFlow exceptions inherit from TeamFlowException and carry:
-- message: Human-readable error description
-- error_code: Machine-readable error code (e.g., "VALIDATION_ERROR")
-- status_code: HTTP status code to return
-
-The teamflow_exception_handler registers with Django Ninja to convert
-these exceptions into structured JSON error responses.
-"""
-
 from http import HTTPStatus
 
 
 class TeamFlowException(Exception):
-    """Base exception for all TeamFlow application errors."""
 
     def __init__(
         self,
@@ -31,12 +18,9 @@ class TeamFlowException(Exception):
 
 
 class ValidationError(TeamFlowException):
-    """Raised when input data fails validation."""
 
     def __init__(
-        self,
-        message: str = "Validation failed.",
-        details: dict | None = None,
+        self, message: str = "Validation failed.", details: dict | None = None
     ):
         super().__init__(
             message=message,
@@ -47,12 +31,9 @@ class ValidationError(TeamFlowException):
 
 
 class NotFoundError(TeamFlowException):
-    """Raised when a requested resource does not exist."""
 
     def __init__(
-        self,
-        message: str = "Resource not found.",
-        details: dict | None = None,
+        self, message: str = "Resource not found.", details: dict | None = None
     ):
         super().__init__(
             message=message,
@@ -63,7 +44,6 @@ class NotFoundError(TeamFlowException):
 
 
 class PermissionDeniedError(TeamFlowException):
-    """Raised when a user lacks the required permission."""
 
     def __init__(
         self,
@@ -79,12 +59,9 @@ class PermissionDeniedError(TeamFlowException):
 
 
 class AuthenticationError(TeamFlowException):
-    """Raised when authentication fails or credentials are invalid."""
 
     def __init__(
-        self,
-        message: str = "Authentication required.",
-        details: dict | None = None,
+        self, message: str = "Authentication required.", details: dict | None = None
     ):
         super().__init__(
             message=message,
@@ -95,7 +72,6 @@ class AuthenticationError(TeamFlowException):
 
 
 class ConflictError(TeamFlowException):
-    """Raised when an operation conflicts with existing state."""
 
     def __init__(
         self,

@@ -1,22 +1,7 @@
-"""
-TeamFlow EPMS — Accounts Constants.
-
-Defines system roles, default permissions, and permission definitions
-used throughout the RBAC system. These constants are used by the
-seed_roles management command to populate the database.
-"""
-
 from enum import Enum
 
 
 class SystemRole(str, Enum):
-    """
-    Enumeration of all built-in system roles.
-
-    Values are slugs used as database identifiers.
-    The hierarchy_level determines role precedence (0 = highest authority).
-    """
-
     ADMINISTRATOR = "administrator"
     FACULTY = "faculty"
     PROJECT_MANAGER = "project_manager"
@@ -27,142 +12,126 @@ class SystemRole(str, Enum):
     VIEWER = "viewer"
 
 
-# ---------------------------------------------------------------------------
-# System Role Definitions
-# ---------------------------------------------------------------------------
-# Maps each role slug to its display name, description, and hierarchy level.
 SYSTEM_ROLES: dict[str, dict] = {
     SystemRole.ADMINISTRATOR: {
         "name": "Administrator",
-        "description": (
-            "Full system access. Manages users, organizations, system settings, "
-            "and has unrestricted access to all resources."
-        ),
+        "description": "Full system access. Manages users, organizations, system settings, and has unrestricted access to all resources.",
         "hierarchy_level": 0,
     },
     SystemRole.FACULTY: {
         "name": "Faculty",
-        "description": (
-            "Academic oversight role. Can view and approve projects, access reports, "
-            "and monitor student team progress."
-        ),
+        "description": "Academic oversight role. Can view and approve projects, access reports, and monitor student team progress.",
         "hierarchy_level": 1,
     },
     SystemRole.PROJECT_MANAGER: {
         "name": "Project Manager",
-        "description": (
-            "Full project lifecycle management. Creates projects, manages teams, "
-            "assigns tasks, schedules meetings, and generates reports."
-        ),
+        "description": "Full project lifecycle management. Creates projects, manages teams, assigns tasks, schedules meetings, and generates reports.",
         "hierarchy_level": 2,
     },
     SystemRole.TEAM_LEAD: {
         "name": "Team Lead",
-        "description": (
-            "Leads a team within a project. Manages team members, assigns tasks, "
-            "conducts code reviews, and reports to the project manager."
-        ),
+        "description": "Leads a team within a project. Manages team members, assigns tasks, conducts code reviews, and reports to the project manager.",
         "hierarchy_level": 3,
     },
     SystemRole.DEVELOPER: {
         "name": "Developer",
-        "description": (
-            "Core contributor. Creates and updates tasks, logs work, "
-            "submits deliverables, and participates in meetings."
-        ),
+        "description": "Core contributor. Creates and updates tasks, logs work, submits deliverables, and participates in meetings.",
         "hierarchy_level": 4,
     },
     SystemRole.QA_ENGINEER: {
         "name": "QA Engineer",
-        "description": (
-            "Quality assurance specialist. Creates and manages test cases, "
-            "reports bugs, verifies fixes, and tracks quality metrics."
-        ),
+        "description": "Quality assurance specialist. Creates and manages test cases, reports bugs, verifies fixes, and tracks quality metrics.",
         "hierarchy_level": 5,
     },
     SystemRole.STAKEHOLDER: {
         "name": "Stakeholder",
-        "description": (
-            "External or internal stakeholder. Views project progress, "
-            "provides feedback, and accesses published reports."
-        ),
+        "description": "External or internal stakeholder. Views project progress, provides feedback, and accesses published reports.",
         "hierarchy_level": 6,
     },
     SystemRole.VIEWER: {
         "name": "Viewer",
-        "description": (
-            "Read-only access. Can view projects, tasks, and reports "
-            "but cannot modify any resources."
-        ),
+        "description": "Read-only access. Can view projects, tasks, and reports but cannot modify any resources.",
         "hierarchy_level": 7,
     },
 }
-
-
-# ---------------------------------------------------------------------------
-# Permission Definitions
-# ---------------------------------------------------------------------------
-# All granular permissions available in the system.
-# Each has a codename (dot-notation), display name, and category.
 PERMISSION_DEFINITIONS: list[dict[str, str]] = [
-    # --- Project Permissions ---
     {"codename": "project.view", "name": "View Projects", "category": "project"},
     {"codename": "project.create", "name": "Create Projects", "category": "project"},
     {"codename": "project.update", "name": "Update Projects", "category": "project"},
     {"codename": "project.delete", "name": "Delete Projects", "category": "project"},
-    {"codename": "project.manage_settings", "name": "Manage Project Settings", "category": "project"},
-    # --- Task Permissions ---
+    {
+        "codename": "project.manage_settings",
+        "name": "Manage Project Settings",
+        "category": "project",
+    },
     {"codename": "task.view", "name": "View Tasks", "category": "task"},
     {"codename": "task.create", "name": "Create Tasks", "category": "task"},
     {"codename": "task.update", "name": "Update Tasks", "category": "task"},
     {"codename": "task.delete", "name": "Delete Tasks", "category": "task"},
     {"codename": "task.assign", "name": "Assign Tasks", "category": "task"},
-    {"codename": "task.change_status", "name": "Change Task Status", "category": "task"},
-    # --- Team Permissions ---
+    {
+        "codename": "task.change_status",
+        "name": "Change Task Status",
+        "category": "task",
+    },
     {"codename": "team.view", "name": "View Teams", "category": "team"},
     {"codename": "team.create", "name": "Create Teams", "category": "team"},
     {"codename": "team.update", "name": "Update Teams", "category": "team"},
     {"codename": "team.delete", "name": "Delete Teams", "category": "team"},
-    {"codename": "team.manage_members", "name": "Manage Team Members", "category": "team"},
-    # --- Meeting Permissions ---
+    {
+        "codename": "team.manage_members",
+        "name": "Manage Team Members",
+        "category": "team",
+    },
     {"codename": "meeting.view", "name": "View Meetings", "category": "meeting"},
     {"codename": "meeting.create", "name": "Create Meetings", "category": "meeting"},
     {"codename": "meeting.update", "name": "Update Meetings", "category": "meeting"},
     {"codename": "meeting.delete", "name": "Delete Meetings", "category": "meeting"},
-    # --- Report Permissions ---
     {"codename": "report.view", "name": "View Reports", "category": "report"},
     {"codename": "report.create", "name": "Create Reports", "category": "report"},
     {"codename": "report.update", "name": "Update Reports", "category": "report"},
     {"codename": "report.delete", "name": "Delete Reports", "category": "report"},
     {"codename": "report.export", "name": "Export Reports", "category": "report"},
-    # --- User / Account Permissions ---
     {"codename": "user.view", "name": "View Users", "category": "user"},
     {"codename": "user.create", "name": "Create Users", "category": "user"},
     {"codename": "user.update", "name": "Update Users", "category": "user"},
     {"codename": "user.delete", "name": "Delete Users", "category": "user"},
     {"codename": "user.manage_roles", "name": "Manage User Roles", "category": "user"},
-    # --- Organization Permissions ---
-    {"codename": "organization.view", "name": "View Organizations", "category": "organization"},
-    {"codename": "organization.create", "name": "Create Organizations", "category": "organization"},
-    {"codename": "organization.update", "name": "Update Organizations", "category": "organization"},
-    {"codename": "organization.delete", "name": "Delete Organizations", "category": "organization"},
-    # --- Notification Permissions ---
-    {"codename": "notification.view", "name": "View Notifications", "category": "notification"},
-    {"codename": "notification.manage", "name": "Manage Notifications", "category": "notification"},
-    # --- Audit Permissions ---
+    {
+        "codename": "organization.view",
+        "name": "View Organizations",
+        "category": "organization",
+    },
+    {
+        "codename": "organization.create",
+        "name": "Create Organizations",
+        "category": "organization",
+    },
+    {
+        "codename": "organization.update",
+        "name": "Update Organizations",
+        "category": "organization",
+    },
+    {
+        "codename": "organization.delete",
+        "name": "Delete Organizations",
+        "category": "organization",
+    },
+    {
+        "codename": "notification.view",
+        "name": "View Notifications",
+        "category": "notification",
+    },
+    {
+        "codename": "notification.manage",
+        "name": "Manage Notifications",
+        "category": "notification",
+    },
     {"codename": "audit.view", "name": "View Audit Logs", "category": "audit"},
 ]
-
-# All permission codenames as a set (for quick lookups)
 ALL_PERMISSION_CODENAMES: set[str] = {p["codename"] for p in PERMISSION_DEFINITIONS}
-
-
-# ---------------------------------------------------------------------------
-# Default Permission Assignments
-# ---------------------------------------------------------------------------
-# Maps each role slug to the permission codenames it receives by default.
 DEFAULT_PERMISSIONS: dict[str, list[str]] = {
-    SystemRole.ADMINISTRATOR: list(ALL_PERMISSION_CODENAMES),  # Full access
+    SystemRole.ADMINISTRATOR: list(ALL_PERMISSION_CODENAMES),
     SystemRole.FACULTY: [
         "project.view",
         "project.create",
