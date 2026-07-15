@@ -1,0 +1,14 @@
+# =============================================================================
+# TeamFlow EPMS — Production Requirements
+# =============================================================================
+
+-r base.txt
+
+# WSGI Server
+gunicorn==23.0.0
+
+# Static file serving
+whitenoise==6.9.0
+
+# Error tracking
+sentry-sdk==2.22.0

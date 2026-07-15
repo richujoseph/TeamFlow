@@ -1,0 +1,32 @@
+# =============================================================================
+# TeamFlow EPMS — Base Requirements
+# =============================================================================
+# Core dependencies used in all environments.
+# =============================================================================
+
+# Django
+Django==5.2.16
+
+# API Framework
+django-ninja==1.6.2
+
+# Database
+psycopg[binary]==3.2.9
+
+# CORS
+django-cors-headers==4.7.0
+
+# Environment variables
+django-environ==0.12.0
+
+# Cache / Sessions
+redis==5.3.0
+
+# Image handling (avatars, uploads)
+Pillow==11.2.1
+
+# Data validation (used by django-ninja)
+pydantic==2.11.4
+
+# JWT tokens
+PyJWT==2.10.1
