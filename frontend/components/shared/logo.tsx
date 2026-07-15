@@ -10,7 +10,6 @@ export function Logo({ className, collapsed = false }: LogoProps) {
   return (
     <Link href="/dashboard" className={cn("flex items-center gap-2", className)}>
       <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-        {/* Simple geometric logo shape */}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"

@@ -1,21 +1,20 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-// Create Axios instance with base URL
+if (!process.env.NEXT_PUBLIC_API_URL) {
+  throw new Error("NEXT_PUBLIC_API_URL environment variable is missing");
+}
+
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   timeout: 10000,
   headers: {
     "Content-Type": "application/json",
   },
-  // Crucial for sending HttpOnly Secure cookies to the backend
   withCredentials: true,
 });
 
-// Request Interceptor
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    // CSRF token attachment could be handled here if Django requires it,
-    // though for JWT in HttpOnly cookies, Django Ninja handles auth silently.
     return config;
   },
   (error) => {
@@ -23,7 +22,6 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response Interceptor
 apiClient.interceptors.response.use(
   (response) => {
     return response.data;
@@ -36,7 +34,6 @@ apiClient.interceptors.response.use(
     };
 
     if (error.response?.status === 401) {
-      // Handle unauthorized access (e.g., redirect to login)
       if (typeof window !== "undefined") {
         window.location.href = "/login";
       }
