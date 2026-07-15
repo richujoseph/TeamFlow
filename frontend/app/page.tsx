@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Workflow, Activity, Users, FileText } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ArrowRight, Workflow, Activity, Users, FileText } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
 
 const features = [
   {
@@ -45,12 +45,12 @@ export default function Home() {
             <span className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">TeamFlow</span>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" asChild className="hidden sm:flex">
-              <Link href="/login">Log in</Link>
-            </Button>
-            <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-md">
-              <Link href="/register">Get Started</Link>
-            </Button>
+            <Link href="/login" className={buttonVariants({ variant: "ghost", className: "hidden sm:flex" })}>
+              Log in
+            </Link>
+            <Link href="/register" className={buttonVariants({ className: "bg-indigo-600 hover:bg-indigo-700 text-white shadow-md" })}>
+              Get Started
+            </Link>
           </div>
         </div>
       </header>
@@ -79,14 +79,12 @@ export default function Home() {
               Built specifically for modern software engineering teams.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Button asChild size="lg" className="h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg shadow-indigo-500/20 transition-all hover:scale-105">
-                <Link href="/dashboard">
-                  Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="h-12 px-8 rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all">
-                <Link href="/docs">Read the Docs</Link>
-              </Button>
+              <Link href="/dashboard" className={buttonVariants({ size: "lg", className: "h-12 px-8 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full shadow-lg shadow-indigo-500/20 transition-all hover:scale-105" })}>
+                Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+              <Link href="/docs" className={buttonVariants({ variant: "outline", size: "lg", className: "h-12 px-8 rounded-full border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all" })}>
+                Read the Docs
+              </Link>
             </div>
           </motion.div>
 

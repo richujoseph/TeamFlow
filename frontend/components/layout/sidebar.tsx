@@ -40,8 +40,8 @@ export function Sidebar() {
                 
                 if (!isOpen) {
                   return (
-                    <Tooltip key={itemIndex} delayDuration={0}>
-                      <TooltipTrigger asChild>
+                    <Tooltip key={itemIndex}>
+                      <TooltipTrigger>
                         <Link href={item.href}>
                           <Button
                             variant={isActive ? "secondary" : "ghost"}
