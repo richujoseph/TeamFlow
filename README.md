@@ -125,7 +125,3 @@ We welcome contributions! Please see our [Contributing Guidelines](./docs/CONTRI
 Please read the [Architecture Document](./docs/ARCHITECTURE.md) to understand the design philosophies before submitting PRs.
 
 ---
-
-<div align="center">
-  <i>Built with passion by software engineers, for software engineers.</i>
-</div>
